@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import proyectoContext from "../../contex/proyectos/proyectoContext";
 import TareaContext from "../../contex/tareas/tareaContext";
 
@@ -9,8 +9,25 @@ const FormTareas = () => {
 
   // Extraer funciones del context de tareas
   const tareasContext = useContext(TareaContext);
-  const { errortarea, agregarTarea, validarTarea, obtenerTareas } =
-    tareasContext;
+  const {
+    tareaseleccionada,
+    errortarea,
+    agregarTarea,
+    validarTarea,
+    obtenerTareas,
+    actualizarTarea,
+    limpiarTarea,
+  } = tareasContext;
+
+  useEffect(() => {
+    if (tareaseleccionada != null) {
+      guardarTarea(tareaseleccionada);
+    } else {
+      guardarTarea({
+        nombre: "",
+      });
+    }
+  }, [tareaseleccionada]);
 
   // state del formulario
   const [tarea, guardarTarea] = useState({
@@ -41,10 +58,19 @@ const FormTareas = () => {
       validarTarea();
       return;
     }
-    // agregar la nueva tarea al state de tareas
-    tarea.proyectoId = proyectoActual.id;
-    tarea.estado = false;
-    agregarTarea(tarea);
+
+    // if es edicion o si es nueva tarea
+    if (tareaseleccionada === null) {
+      // agregar la nueva tarea al state de tareas
+      tarea.proyectoId = proyectoActual.id;
+      tarea.estado = false;
+      agregarTarea(tarea);
+    } else {
+      // actualizar la tarea
+      actualizarTarea(tarea);
+      // elimina tarea seleccionada del state
+      limpiarTarea();
+    }
 
     // obtener y filtrar tares del proyecto actual
     obtenerTareas(proyectoActual.id);
@@ -54,6 +80,7 @@ const FormTareas = () => {
       nombre: "",
     });
   };
+
   return (
     <div className="formulario">
       <form onSubmit={onSubmit}>
@@ -71,7 +98,7 @@ const FormTareas = () => {
           <input
             type="submit"
             className="btn btn-primario btn-submit btn-block"
-            value="Agregar Tareas"
+            value={tareaseleccionada ? "Editar Tarea" : "Agregar Tareas"}
           />
         </div>
       </form>
