@@ -1,29 +1,46 @@
+import { useContext } from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+
+import proyectoContext from "../../contex/proyectos/proyectoContext";
+import TareaContext from "../../contex/tareas/tareaContext";
 import Tarea from "./Tarea";
 
 const ListadoTareas = () => {
-  const tareasProyecto = [
-    { nombre: "tarea1", estado: true },
-    { nombre: "tarea2", estado: false },
-    { nombre: "tarea3", estado: true },
-    { nombre: "tarea4", estado: false },
-    { nombre: "tarea5", estado: true },
-    { nombre: "tarea6", estado: false },
-    { nombre: "tarea7", estado: false },
-    { nombre: "tarea8", estado: true },
-  ];
+  // extraer proyectos del state inicial con el context
+  const proyectosContext = useContext(proyectoContext);
+  const { proyecto, eliminarProyecto } = proyectosContext;
+
+  // extraer la tareas de un proyecto
+  const tareasContext = useContext(TareaContext);
+  const { tareasproyecto } = tareasContext;
+
+  // si no hay proyecto seleccionado
+  if (!proyecto) return <h2> Selecciona un proyecto</h2>;
+
+  // array destructuring para extraer el proyecto actual
+  const [proyectoActual] = proyecto;
+
+  // eliminar un proyecto
+  const onClickEliminar = () => {
+    eliminarProyecto(proyectoActual.id);
+  };
   return (
     <>
-      <h2>Proyecto</h2>
+      <h2>Proyecto: {proyectoActual.nombre}</h2>
       <ul className="listado-tareas">
-        {tareasProyecto.length === 0 ? (
+        {tareasproyecto.length === 0 ? (
           <li className="tarea">
             <p>No hay tareas</p>
           </li>
         ) : (
-          tareasProyecto.map((tarea) => <Tarea tarea={tarea} />)
+          tareasproyecto.map((tarea) => <Tarea key={tarea.id} tarea={tarea} />)
         )}
       </ul>
-      <button type="button" className="btn btn-eliminar">
+      <button
+        type="button"
+        className="btn btn-eliminar"
+        onClick={onClickEliminar}
+      >
         Eliminar Proyecto &times;
       </button>
     </>
