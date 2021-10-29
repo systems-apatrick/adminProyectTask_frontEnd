@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import alertaContext from "../../contex/alertas/alertaContext";
 
 const NuevaCuenta = () => {
+  // extraer los valores del context
+  const alertasContext = useContext(alertaContext);
+  const { alerta, mostrarAlerta } = alertasContext;
+
   // state para iniciar sesion
   const [usuario, guardarUsuario] = useState({
     nombre: "",
@@ -26,15 +31,37 @@ const NuevaCuenta = () => {
     e.preventDefault();
 
     // validar que no haya campos vacios
+    if (
+      nombre.trim() === "" ||
+      email.trim() === "" ||
+      password.trim() === "" ||
+      confirmar.trim() === ""
+    ) {
+      mostrarAlerta("Todos los campos son obligatorios", "alerta-error");
+      return;
+    }
 
     //   validar que el password sea minimo 6 caracertes,
-
+    if (password.length < 6) {
+      mostrarAlerta(
+        "El password debe ser al menos 6 caracteres",
+        "alerta-error"
+      );
+      return;
+    }
     // validar que los dos password sean iguales
 
+    if (password !== confirmar) {
+      mostrarAlerta("El passwords no son iguales", "alerta-error");
+      return;
+    }
     // pasar al accion
   };
   return (
     <div className="form-usuario">
+      {alerta ? (
+        <div className={`alerta ${alerta.categoria}`}>{alerta.msg}</div>
+      ) : null}
       <div className="contenedor-form sombra-dark">
         <h1> Registrarte</h1>
         <form onSubmit={onSubmit}>
