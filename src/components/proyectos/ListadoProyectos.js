@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { useRef } from "react/cjs/react.development";
 import alertaContext from "../../contex/alertas/alertaContext";
 import proyectoContext from "../../contex/proyectos/proyectoContext";
 import Proyecto from "./Proyecto";
@@ -7,6 +8,8 @@ import Proyecto from "./Proyecto";
 const ListadoProyectos = () => {
   const alertsContext = useContext(alertaContext);
   const { alerta, mostrarAlerta } = alertsContext;
+
+  const nodeRef = useRef(null);
 
   // extraer proyecto de state inicial
   const proyectosContext = useContext(proyectoContext);
@@ -27,13 +30,18 @@ const ListadoProyectos = () => {
     return <p>No hay proyectos, comienza creando tus proyectos</p>;
 
   return (
-    <ul className="listado-proyecto">
+    <ul className="listado-proyectos">
       {alerta ? (
         <div className={`alerta ${alerta.categoria}`}>{alerta.msg}</div>
       ) : null}
       <TransitionGroup className="todo-list">
         {proyectos.map((proyecto) => (
-          <CSSTransition key={proyecto._id} timeout={200} classNames="proyecto">
+          <CSSTransition
+            key={proyecto._id}
+            nodeRef={nodeRef}
+            timeout={200}
+            classNames="proyecto"
+          >
             <Proyecto proyecto={proyecto} />
           </CSSTransition>
         ))}

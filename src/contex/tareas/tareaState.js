@@ -1,11 +1,10 @@
 import { useReducer } from "react";
-import { v4 as uuidv4 } from "uuid";
+import clienteAxios from "../../config/axios";
 
 import {
   ACTUALIZAR_TAREA,
   AGREGAR_TAREA,
   ELIMINAR_TAREA,
-  ESTADO_TAREA,
   LIMPIAR_TAREA,
   TAREAS_PROYECTO,
   TAREA_ACTUAL,
@@ -16,19 +15,7 @@ import TareaReducer from "./tareaReducer";
 
 const TareaState = (props) => {
   const initialState = {
-    tareas: [
-      { id: 1, proyectoId: 1, nombre: "tarea1", estado: true },
-      { id: 2, proyectoId: 1, nombre: "tarea3", estado: true },
-      { id: 3, proyectoId: 2, nombre: "tarea2", estado: false },
-      { id: 4, proyectoId: 2, nombre: "tarea4", estado: false },
-      { id: 5, proyectoId: 2, nombre: "tarea5", estado: true },
-      { id: 6, proyectoId: 3, nombre: "tarea6", estado: false },
-      { id: 7, proyectoId: 3, nombre: "tarea7", estado: false },
-      { id: 8, proyectoId: 1, nombre: "tarea8", estado: true },
-      { id: 9, proyectoId: 4, nombre: "tarea00", estado: true },
-      { id: 10, proyectoId: 4, nombre: "tarea-00", estado: true },
-    ],
-    tareasproyecto: null,
+    tareasproyecto: [],
     errortarea: false,
     tareaseleccionada: null,
   };
@@ -39,20 +26,31 @@ const TareaState = (props) => {
   // crear las funciones
 
   // obtener las tareas de un proyecto
-  const obtenerTareas = (proyectoId) => {
-    dispatch({
-      type: TAREAS_PROYECTO,
-      payload: proyectoId,
-    });
+  const obtenerTareas = async (proyecto) => {
+    try {
+      const resultado = await clienteAxios.get("/api/tareas", {
+        params: { proyecto },
+      });
+      dispatch({
+        type: TAREAS_PROYECTO,
+        payload: resultado.data.tareas,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // AGREGAR UNA TAREA AL PROYECTO SELECCIONADO
-  const agregarTarea = (tarea) => {
-    tarea.id = uuidv4();
-    dispatch({
-      type: AGREGAR_TAREA,
-      payload: tarea,
-    });
+  const agregarTarea = async (tarea) => {
+    try {
+      const resultado = await clienteAxios.post("/api/tareas", tarea);
+      dispatch({
+        type: AGREGAR_TAREA,
+        payload: resultado.data.tarea,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // VALIDA Y MUESTRA UN ERROR SI ES NECESARIO
@@ -63,33 +61,39 @@ const TareaState = (props) => {
   };
 
   // eliminar un tarea por id
-  const eliminarTarea = (id) => {
-    dispatch({
-      type: ELIMINAR_TAREA,
-      payload: id,
-    });
+  const eliminarTarea = async (id, proyecto) => {
+    try {
+      await clienteAxios.delete(`/api/tareas/${id}`, { params: { proyecto } });
+
+      dispatch({
+        type: ELIMINAR_TAREA,
+        payload: id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  // Cambia el estado de cada tarea
-  const cambiarEstadoTarea = (tarea) => {
-    dispatch({
-      type: ESTADO_TAREA,
-      payload: tarea,
-    });
+  // EDITA O MODIFICA UN TAREA
+  const actualizarTarea = async (tarea) => {
+    try {
+      const resultado = await clienteAxios.put(
+        `/api/tareas/${tarea._id}`,
+        tarea
+      );
+      dispatch({
+        type: ACTUALIZAR_TAREA,
+        payload: resultado.data.tarea,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // EXTRAE UNA TAREA PARA EDICION
   const guardarTareaActual = (tarea) => {
     dispatch({
       type: TAREA_ACTUAL,
-      payload: tarea,
-    });
-  };
-
-  // EDITA O MODIFICA UN TAREA
-  const actualizarTarea = (tarea) => {
-    dispatch({
-      type: ACTUALIZAR_TAREA,
       payload: tarea,
     });
   };
@@ -104,7 +108,6 @@ const TareaState = (props) => {
   return (
     <TareaContext.Provider
       value={{
-        tareas: state.tareas,
         tareasproyecto: state.tareasproyecto,
         errortarea: state.errortarea,
         tareaseleccionada: state.tareaseleccionada,
@@ -112,7 +115,6 @@ const TareaState = (props) => {
         agregarTarea,
         validarTarea,
         eliminarTarea,
-        cambiarEstadoTarea,
         guardarTareaActual,
         actualizarTarea,
         limpiarTarea,
