@@ -85,7 +85,7 @@ const AuthState = (props) => {
     } catch (error) {
       // console.log(error.response.data.msg);
       let alerta = {};
-      if (error.response == null) {
+      if (error.response === null) {
         alerta = {
           msg: "Error en conexion con el servidor",
           categoria: "alerta-error",
