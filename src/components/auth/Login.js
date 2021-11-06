@@ -18,7 +18,6 @@ const Login = (props) => {
     if (autenticado) {
       props.history.push("/proyectos");
     }
-    console.log(mensaje);
     if (mensaje) {
       mostrarAlerta(mensaje.msg, mensaje.categoria);
     }

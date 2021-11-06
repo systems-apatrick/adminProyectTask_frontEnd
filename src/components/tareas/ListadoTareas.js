@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { useRef } from "react/cjs/react.development";
+import { useRef } from "react/cjs/react.production.min";
+// import { useRef } from "react/cjs/react.development";
 
 import proyectoContext from "../../contex/proyectos/proyectoContext";
 import TareaContext from "../../contex/tareas/tareaContext";

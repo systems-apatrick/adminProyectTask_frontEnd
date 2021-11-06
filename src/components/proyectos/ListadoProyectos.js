@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { useRef } from "react/cjs/react.development";
+import { useRef } from "react/cjs/react.production.min";
+// import { useRef } from "react/cjs/react.development";
 import alertaContext from "../../contex/alertas/alertaContext";
 import proyectoContext from "../../contex/proyectos/proyectoContext";
 import Proyecto from "./Proyecto";
