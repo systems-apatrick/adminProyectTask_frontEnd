@@ -6,6 +6,7 @@ import {
   AGREGAR_TAREA,
   ELIMINAR_TAREA,
   LIMPIAR_TAREA,
+  RESET_TAREAS,
   TAREAS_PROYECTO,
   TAREA_ACTUAL,
   VALIDAR_TAREA,
@@ -105,6 +106,13 @@ const TareaState = (props) => {
     });
   };
 
+  // RESETEAR TAREAS
+  const resetTareas = () => {
+    dispatch({
+      type: RESET_TAREAS,
+    });
+  };
+
   return (
     <TareaContext.Provider
       value={{
@@ -118,6 +126,7 @@ const TareaState = (props) => {
         guardarTareaActual,
         actualizarTarea,
         limpiarTarea,
+        resetTareas,
       }}
     >
       {props.children}

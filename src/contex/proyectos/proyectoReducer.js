@@ -5,6 +5,7 @@ import {
   OBTENER_PROYECTOS,
   PROYECTO_ACTUAL,
   PROYECTO_ERROR,
+  RESET_PROYECTOS,
   VALIDAR_FORMULARIO,
 } from "../../types";
 
@@ -52,6 +53,14 @@ const proyectoReducer = (state, action) => {
       return {
         ...state,
         mensaje: action.payload,
+      };
+    case RESET_PROYECTOS:
+      return {
+        proyectos: [],
+        formulario: false,
+        errorformulario: false,
+        proyecto: null,
+        mensaje: null,
       };
     default:
       return state;

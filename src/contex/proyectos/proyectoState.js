@@ -9,6 +9,7 @@ import {
   PROYECTO_ACTUAL,
   ELIMINAR_PROYECTO,
   PROYECTO_ERROR,
+  RESET_PROYECTOS,
 } from "../../types";
 import proyectoContext from "./proyectoContext";
 import proyectoReducer from "./proyectoReducer";
@@ -112,6 +113,11 @@ const ProyectoState = (props) => {
     }
   };
 
+  const resetProyectos = () => {
+    dispatch({
+      type: RESET_PROYECTOS,
+    });
+  };
   return (
     <proyectoContext.Provider
       value={{
@@ -126,6 +132,7 @@ const ProyectoState = (props) => {
         mostrarError,
         proyectoActual,
         eliminarProyecto,
+        resetProyectos,
       }}
     >
       {props.children}

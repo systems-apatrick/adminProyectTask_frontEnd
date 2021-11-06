@@ -3,6 +3,7 @@ import {
   AGREGAR_TAREA,
   ELIMINAR_TAREA,
   LIMPIAR_TAREA,
+  RESET_TAREAS,
   TAREAS_PROYECTO,
   TAREA_ACTUAL,
   VALIDAR_TAREA,
@@ -52,6 +53,12 @@ const TareaReducer = (state, action) => {
     case LIMPIAR_TAREA:
       return {
         ...state,
+        tareaseleccionada: null,
+      };
+    case RESET_TAREAS:
+      return {
+        tareasproyecto: [],
+        errortarea: false,
         tareaseleccionada: null,
       };
     default:
