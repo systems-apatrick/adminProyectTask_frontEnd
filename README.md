@@ -8,6 +8,6 @@ Backend de la aplicación [Aquí](https://github.com/systems-apatrick/admin_proy
 
 ## Screenshots de la aplicación.
 
-![Página Principal](/screenshot/imagen1.png)
-![Página Principal1](/screenshot/imagen2.png)
-![Página Principal2](/screenshot/imagen3.png)
+![Página Principal](/screenshots/imagen1.png)
+![Página Principal1](/screenshots/imagen2.png)
+![Página Principal2](/screenshots/imagen3.png)
