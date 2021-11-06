@@ -83,11 +83,20 @@ const AuthState = (props) => {
       // obtener el usuario autenticado
       usuarioAutenticado();
     } catch (error) {
-      console.log(error.response.data.msg);
-      const alerta = {
-        msg: error.response.data.msg,
-        categoria: "alerta-error",
-      };
+      // console.log(error.response.data.msg);
+      let alerta = {};
+      if (error.response == null) {
+        alerta = {
+          msg: "Error en conexion con el servidor",
+          categoria: "alerta-error",
+        };
+      } else {
+        alerta = {
+          msg: error.response.data.msg,
+          categoria: "alerta-error",
+        };
+      }
+
       dispatch({
         type: LOGIN_ERROR,
         payload: alerta,
