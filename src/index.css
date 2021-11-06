@@ -3,6 +3,8 @@
   --gris1: #edf2f6;
   --gris2: #2f4d72;
   --gris3: #1d252c;
+  --gris33: #803c53;
+  --gris4: #e02362;
   --negro: #000000;
   --headingFont: "Raleway", sans-serif;
   --textFont: "Roboto", sans-serif;
@@ -73,6 +75,15 @@ a {
 .btn-primario:hover {
   background: var(--gris3);
 }
+
+.btn-editar {
+  background-color: var(--gris4);
+  color: var(--blanco);
+}
+.btn-editar:hover {
+  background: var(--gris33);
+}
+
 .btn-secundario {
   background-color: var(--gris1);
 }

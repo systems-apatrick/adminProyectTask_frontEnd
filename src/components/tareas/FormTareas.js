@@ -97,7 +97,11 @@ const FormTareas = () => {
         <div className="contenedor-input">
           <input
             type="submit"
-            className="btn btn-primario btn-submit btn-block"
+            className={
+              tareaseleccionada
+                ? "btn btn-editar  btn-block"
+                : "btn btn-primario btn-submit btn-block"
+            }
             value={tareaseleccionada ? "Editar Tarea" : "Agregar Tareas"}
           />
         </div>
